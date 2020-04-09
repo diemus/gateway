@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"strings"
 
-	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
+	"github.com/tencentyun/scf-go-lib/events"
 )
 
 // ResponseWriter implements the http.ResponseWriter interface
 // in order to support the API Gateway Lambda HTTP "protocol".
 type ResponseWriter struct {
-	out           events.APIGatewayProxyResponse
+	out           events.APIGatewayResponse
 	buf           bytes.Buffer
 	header        http.Header
 	wroteHeader   bool
@@ -78,7 +78,7 @@ func (w *ResponseWriter) CloseNotify() <-chan bool {
 }
 
 // End the request.
-func (w *ResponseWriter) End() events.APIGatewayProxyResponse {
+func (w *ResponseWriter) End() events.APIGatewayResponse {
 	w.out.IsBase64Encoded = isBinary(w.header)
 
 	if w.out.IsBase64Encoded {

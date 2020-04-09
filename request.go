@@ -2,18 +2,17 @@ package gateway
 
 import (
 	"context"
-	"encoding/base64"
+	"github.com/tencentyun/scf-go-lib/events"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
-	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
 )
 
 // NewRequest returns a new http.Request from the given Lambda event.
-func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Request, error) {
+func NewRequest(ctx context.Context, e events.APIGatewayRequest) (*http.Request, error) {
 	// path
 	u, err := url.Parse(e.Path)
 	if err != nil {
@@ -22,24 +21,24 @@ func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Req
 
 	// querystring
 	q := u.Query()
-	for k, v := range e.QueryStringParameters {
-		q.Set(k, v)
+	for k, v := range e.QueryString {
+		q[k] = v
 	}
 
 	u.RawQuery = q.Encode()
 
 	// base64 encoded body
 	body := e.Body
-	if e.IsBase64Encoded {
-		b, err := base64.StdEncoding.DecodeString(body)
-		if err != nil {
-			return nil, errors.Wrap(err, "decoding base64 body")
-		}
-		body = string(b)
-	}
+	//if e.IsBase64Encoded {
+	//	b, err := base64.StdEncoding.DecodeString(body)
+	//	if err != nil {
+	//		return nil, errors.Wrap(err, "decoding base64 body")
+	//	}
+	//	body = string(b)
+	//}
 
 	// new request
-	req, err := http.NewRequest(e.HTTPMethod, u.String(), strings.NewReader(body))
+	req, err := http.NewRequest(e.Method, u.String(), strings.NewReader(body))
 	if err != nil {
 		return nil, errors.Wrap(err, "creating request")
 	}
@@ -48,7 +47,7 @@ func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Req
 	req.RequestURI = e.Path
 
 	// remote addr
-	req.RemoteAddr = e.RequestContext.SourceIP
+	req.RemoteAddr = e.Context.SourceIP
 
 	// header fields
 	for k, v := range e.Headers {
@@ -61,8 +60,8 @@ func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Req
 	}
 
 	// custom fields
-	req.Header.Set("X-Request-Id", e.RequestContext.RequestID)
-	req.Header.Set("X-Stage", e.RequestContext.Stage)
+	req.Header.Set("X-Request-Id", e.Context.RequestID)
+	req.Header.Set("X-Stage", e.Context.Stage)
 
 	// custom context values
 	req = req.WithContext(newContext(ctx, e))

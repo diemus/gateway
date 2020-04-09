@@ -5,8 +5,8 @@ import (
 	"context"
 	"net/http"
 
-	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
 	lambda "github.com/tencentyun/scf-go-lib/cloudfunction"
+	"github.com/tencentyun/scf-go-lib/events"
 	//"github.com/aws/aws-lambda-go/events"
 	//"github.com/aws/aws-lambda-go/lambda"
 )
@@ -20,10 +20,10 @@ func ListenAndServe(addr string, h http.Handler) error {
 		h = http.DefaultServeMux
 	}
 
-	lambda.Start(func(ctx context.Context, e events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	lambda.Start(func(ctx context.Context, e events.APIGatewayRequest) (events.APIGatewayResponse, error) {
 		r, err := NewRequest(ctx, e)
 		if err != nil {
-			return events.APIGatewayProxyResponse{}, err
+			return events.APIGatewayResponse{}, err
 		}
 
 		w := NewResponse()
