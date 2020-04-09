@@ -1,7 +1,7 @@
-<img src="http://tjholowaychuk.com:6000/svg/title/APEX/GATEWAY">
+# Usage
+基于`github.com/diemus/gateway`适配而来，用于golang版SCF接入gin框架或者普通http框架
 
-Package gateway provides a drop-in replacement for net/http's `ListenAndServe` for use in SCF Cloud Function & API Gateway, simply swap it out for `gateway.ListenAndServe`. Extracted from [Up](https://github.com/apex/up) which provides additional middleware features and operational functionality.
-
+## http
 ```go
 package main
 
@@ -79,5 +79,3 @@ func main() {
 [![GoDoc](https://godoc.org/github.com/apex/up-go?status.svg)](https://godoc.org/github.com/apex/gateway)
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 ![](https://img.shields.io/badge/status-stable-green.svg)
-
-<a href="https://apex.sh"><img src="http://tjholowaychuk.com:6000/svg/sponsor"></a>
