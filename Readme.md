@@ -69,7 +69,7 @@ func routerEngine() *gin.Engine {
 }
 
 func main() {
-	addr := ":" + os.Getenv("PORT")
+	addr := ":" + os.Getenv("PORT")     // 此处addr无实际意义，因为请求是通过事件传入的
 	log.Fatal(gateway.ListenAndServe(addr, routerEngine()))
 }
 ```
