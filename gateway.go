@@ -5,8 +5,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
+	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
+	lambda "github.com/tencentyun/scf-go-lib/cloudfunction"
+	//"github.com/aws/aws-lambda-go/events"
+	//"github.com/aws/aws-lambda-go/lambda"
 )
 
 // ListenAndServe is a drop-in replacement for

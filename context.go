@@ -3,7 +3,7 @@ package gateway
 import (
 	"context"
 
-	"github.com/aws/aws-lambda-go/events"
+	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
 )
 
 // key is the type used for any items added to the request context.

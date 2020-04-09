@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aws/aws-lambda-go/events"
+	events "github.com/tencentyun/scf-go-lib/cloudevents/scf"
 )
 
 // ResponseWriter implements the http.ResponseWriter interface
@@ -69,7 +69,6 @@ func (w *ResponseWriter) WriteHeader(status int) {
 	}
 
 	w.out.Headers = h
-	w.out.MultiValueHeaders = mvh
 	w.wroteHeader = true
 }
 
